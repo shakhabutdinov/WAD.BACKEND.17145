@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using WAD.BACKEND._17145.Data;
+using WAD.BACKEND._17145.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,21 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<EventManagementDbContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("EventManagementConnectionStr")));
+
+
+
+var allowedOrigins = "_allowedOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: allowedOrigins, policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+builder.Services.AddScoped<IEventRepository,EventRepository>();
+builder.Services.AddScoped<IParticipantsRepository,ParticipantsRepository>();
 
 var app = builder.Build();
 
@@ -26,6 +42,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseCors(allowedOrigins);
 app.MapControllers();
 
 app.Run();

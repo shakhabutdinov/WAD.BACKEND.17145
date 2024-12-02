@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WAD.BACKEND._17145.Data;
@@ -21,18 +19,16 @@ namespace WAD.BACKEND._17145.Controllers
             _context = context;
         }
 
-        // GET: api/Participants
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Participants>>> GetParticipants()
         {
-            return await _context.Participants.ToListAsync();
+            return await _context.Participants.Include(p => p.Events).ToListAsync();
         }
 
-        // GET: api/Participants/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Participants>> GetParticipants(int id)
         {
-            var participants = await _context.Participants.FindAsync(id);
+            var participants = await _context.Participants.Include(p => p.Events).FirstOrDefaultAsync(p => p.Id == id);
 
             if (participants == null)
             {
@@ -42,8 +38,6 @@ namespace WAD.BACKEND._17145.Controllers
             return participants;
         }
 
-        // PUT: api/Participants/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutParticipants(int id, Participants participants)
         {
@@ -73,8 +67,6 @@ namespace WAD.BACKEND._17145.Controllers
             return NoContent();
         }
 
-        // POST: api/Participants
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Participants>> PostParticipants(Participants participants)
         {
@@ -84,7 +76,6 @@ namespace WAD.BACKEND._17145.Controllers
             return CreatedAtAction("GetParticipants", new { id = participants.Id }, participants);
         }
 
-        // DELETE: api/Participants/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteParticipants(int id)
         {
