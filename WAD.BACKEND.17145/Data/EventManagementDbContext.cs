@@ -3,7 +3,7 @@ using WAD.BACKEND._17145.Models;
 
 namespace WAD.BACKEND._17145.Data
 {
-    public class EventManagementDbContext:DbContext
+    public class EventManagementDbContext : DbContext
     {
         public EventManagementDbContext(DbContextOptions<EventManagementDbContext> options) : base(options) { }
 

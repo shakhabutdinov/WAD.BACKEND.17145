@@ -4,6 +4,7 @@ namespace WAD.BACKEND._17145.Models
 {
     public class Events
     {
+        [Key]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "EventName is required")]

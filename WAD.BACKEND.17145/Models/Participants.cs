@@ -5,6 +5,7 @@ namespace WAD.BACKEND._17145.Models
 {
     public class Participants
     {
+        [Key]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Participant name is required")]

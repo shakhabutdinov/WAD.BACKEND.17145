@@ -25,10 +25,6 @@ namespace WAD.BACKEND._17145.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Events>>> GetEvents()
         {
-          if (_context.Events == null)
-          {
-              return NotFound();
-          }
             return await _context.Events.ToListAsync();
         }
 
@@ -36,10 +32,6 @@ namespace WAD.BACKEND._17145.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Events>> GetEvents(int id)
         {
-          if (_context.Events == null)
-          {
-              return NotFound();
-          }
             var events = await _context.Events.FindAsync(id);
 
             if (events == null)
@@ -86,10 +78,6 @@ namespace WAD.BACKEND._17145.Controllers
         [HttpPost]
         public async Task<ActionResult<Events>> PostEvents(Events events)
         {
-          if (_context.Events == null)
-          {
-              return Problem("Entity set 'EventManagementDbContext.Events'  is null.");
-          }
             _context.Events.Add(events);
             await _context.SaveChangesAsync();
 
@@ -100,10 +88,6 @@ namespace WAD.BACKEND._17145.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEvents(int id)
         {
-            if (_context.Events == null)
-            {
-                return NotFound();
-            }
             var events = await _context.Events.FindAsync(id);
             if (events == null)
             {
@@ -118,7 +102,7 @@ namespace WAD.BACKEND._17145.Controllers
 
         private bool EventsExists(int id)
         {
-            return (_context.Events?.Any(e => e.Id == id)).GetValueOrDefault();
+            return _context.Events.Any(e => e.Id == id);
         }
     }
 }
